@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:whistler/features/view/home/home_view.dart';
+import 'package:whistler/products/init/app_init.dart';
 
-void main() {
+Future<void> main() async {
+  /// App Initialization
+  await AppInit().init();
   runApp(const MyApp());
 }
 
