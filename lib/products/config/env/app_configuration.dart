@@ -5,4 +5,7 @@ abstract class AppConfiguration {
 
   /// API key of the Wihsper API.
   String get apiKey;
+
+  /// API key of the Wihsper API.
+  String get url;
 }

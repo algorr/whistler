@@ -11,9 +11,15 @@ final class ProdEnv implements AppConfiguration {
   @EnviedField(varName: 'API_KEY')
   static final String _apiKey = _ProdEnv._apiKey;
 
+  @EnviedField(varName: 'URL')
+  static final String _url = _ProdEnv._url;
+
   @override
   String get apiKey => _apiKey;
 
   @override
   String get baseUrl => _baseUrl;
+
+  @override
+  String get url => _url;
 }

@@ -20,6 +20,8 @@ final class AppEnvironment {
 
   /// API key for the Whistler API
   static String get apiKey => _config.apiKey;
+
+  static String get url => _config.url;
 }
 
 /// App environment items

@@ -11,9 +11,15 @@ final class DevEnv implements AppConfiguration {
   @EnviedField(varName: 'API_KEY')
   static final String _apiKey = _DevEnv._apiKey;
 
+  @EnviedField(varName: 'URL')
+  static final String _url = _DevEnv._url;
+
   @override
   String get apiKey => _apiKey;
 
   @override
   String get baseUrl => _baseUrl;
+
+  @override
+  String get url => _url;
 }
