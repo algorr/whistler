@@ -19,7 +19,8 @@ class HomeView extends StatelessWidget {
               type: FileType.audio,
             );
             if (result != null) {
-              SpeechToTextService().getTextOfSpeech(result.files.single.path!);
+              await SpeechToTextService()
+                  .getTextOfSpeech(result.files.single.path!);
             }
           },
           child: const Text('Try'),
