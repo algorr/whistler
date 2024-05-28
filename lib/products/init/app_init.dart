@@ -6,6 +6,8 @@ final class AppInit {
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    //await Hive.initFlutter();
+    //HiveLocalService().initLocalService();
     AppEnvironment.general();
   }
 }

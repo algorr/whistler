@@ -1,8 +1,19 @@
-/// Http response model
-final class ResponseModel {
-  /// Http response model constructor
-  ResponseModel({required this.message});
+/// ResponseModel class
+class ResponseModel {
+  ResponseModel({this.text});
 
-  /// Response Message
-  final String message;
+  /// text property
+  String? text;
+
+  /// fromJson method
+  ResponseModel.fromJson(Map<String, dynamic> json) {
+    text = json['text'];
+  }
+
+  /// toJson method
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['text'] = text;
+    return data;
+  }
 }
