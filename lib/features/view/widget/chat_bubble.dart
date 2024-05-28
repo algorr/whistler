@@ -92,22 +92,23 @@ class _WaveBubbleState extends State<WaveBubble> {
 
   void _preparePlayer() async {
     // Opening file from assets folder
-    if (widget.path != null) {
-      file = File(widget.appDirectory.path);
-    }
+
+    file = File('${widget.appDirectory.path}/audio${widget.index}.mp3');
+    print('File in path : ${file?.path}');
+
     if (widget.index == null && widget.path == null && file?.path == null) {
       return;
     }
     // Prepare player with extracting waveform if index is even.
     controller.preparePlayer(
-      path: widget.path ?? file!.path,
-      shouldExtractWaveform: widget.index.isEven ?? true,
+      path: widget.appDirectory.path,
+      shouldExtractWaveform: widget.index.isEven,
     );
     // Extracting waveform separately if index is odd.
-    if (widget.index?.isOdd ?? false) {
+    if (widget.index.isOdd) {
       controller
           .extractWaveformData(
-            path: widget.path ?? file!.path,
+            path: widget.appDirectory.path,
             noOfSamples:
                 playerWaveStyle.getSamplesForWidth(widget.width ?? 200),
           )
@@ -157,6 +158,7 @@ class _WaveBubbleState extends State<WaveBubble> {
                         controller.playerState.isPlaying
                             ? Icons.stop
                             : Icons.play_arrow,
+                        size: 30,
                       ),
                       color: Colors.white,
                       splashColor: Colors.transparent,

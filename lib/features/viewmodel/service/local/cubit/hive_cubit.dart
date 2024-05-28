@@ -18,7 +18,7 @@ class HiveCubit extends Cubit<HiveState> {
     try {
       await Hive.initFlutter();
       await _hiveLocalService.initLocalService();
-      //await _hiveLocalStorage.removeFile();
+      // await _hiveLocalService.deleteItem();
       storagedFiles = await getAllList();
       print('InitialCubit te : ${storagedFiles.length}');
       emit(HiveInitial(chatList: storagedFiles));

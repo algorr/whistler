@@ -8,8 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:typewritertext/v3/typewriter.dart';
-import 'package:wave_blob/wave_blob.dart';
-import 'package:whistler/domain/service/local/hive_local_service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:whistler/domain/service/speech_to_text_service.dart';
 import 'package:whistler/features/model/response_model.dart';
 import 'package:whistler/features/view/widget/chat_bubble.dart';
@@ -46,7 +45,7 @@ class _HomeState extends State<Home> {
 
   void _getDir() async {
     appDirectory = await getApplicationDocumentsDirectory();
-    path = "${appDirectory.path}/recording.m4a";
+    path = '${appDirectory.path}/${Uuid().v4()}.m4a';
     isLoading = false;
     setState(() {});
   }
@@ -128,7 +127,8 @@ class _HomeState extends State<Home> {
                               itemBuilder: (context, index) {
                                 print(
                                     'Sesin pathi : ${state.chatList?[index].audioFilePath}');
-                                return isRecording
+                                return isRecording &&
+                                        index == (state.chatList!.length - 1)
                                     ? Lottie.asset('assets/lottie/loading.json',
                                         height: 70, width: 70)
                                     : ListTile(
@@ -248,8 +248,9 @@ class _HomeState extends State<Home> {
           debugPrint("Recorded file size: ${File(path!).lengthSync()}");
         }
       } else {
-        await recorderController.record(path: path);
+        // await recorderController.record(path: path);
         // Path is optional
+        await recorderController.record(path: path);
       }
     } catch (e) {
       debugPrint(e.toString());
