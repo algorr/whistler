@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:whistler/core/constants/app_consts.dart';
-import 'package:whistler/domain/service/service_manager.dart';
+import 'package:whistler/domain/service/whistler/whisper_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:whistler/features/model/chat_model.dart';
 import 'package:whistler/features/model/response_model.dart';
 import 'package:whistler/products/config/env/app_environment.dart';
 
-final class SpeechToTextService extends ServiceManager {
+final class SpeechToTextService extends WhisperManager {
   @override
   Future<ResponseModel> getTextOfEnglishSpeech(String filePath) async {
     try {

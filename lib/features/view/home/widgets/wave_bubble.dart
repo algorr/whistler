@@ -3,61 +3,15 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-class ChatBubble extends StatelessWidget {
-  final String text;
-  final bool isSender;
-  final bool isLast;
-
-  const ChatBubble({
-    Key? key,
-    required this.text,
-    this.isSender = false,
-    this.isLast = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, bottom: 10, right: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              if (isSender) const Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: isSender
-                        ? const Color(0xFF276bfd)
-                        : const Color(0xFF343145)),
-                padding: const EdgeInsets.only(
-                    bottom: 9, top: 8, left: 14, right: 12),
-                child: Text(
-                  text,
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class WaveBubble extends StatefulWidget {
   final bool isSender;
   final int index;
   final String? path;
   final double? width;
-  final Directory appDirectory;
 
   const WaveBubble({
     Key? key,
-    required this.appDirectory,
     this.width,
     required this.index,
     this.isSender = false,
@@ -93,27 +47,22 @@ class _WaveBubbleState extends State<WaveBubble> {
   void _preparePlayer() async {
     // Opening file from assets folder
 
-    file = File('${widget.appDirectory.path}/audio${widget.index}.mp3');
+    file = File(widget.path ?? '');
     print('File in path : ${file?.path}');
 
-    if (widget.index == null && widget.path == null && file?.path == null) {
-      return;
-    }
     // Prepare player with extracting waveform if index is even.
     controller.preparePlayer(
-      path: widget.appDirectory.path,
-      shouldExtractWaveform: widget.index.isEven,
+      path: widget.path ?? '',
+      shouldExtractWaveform: true,
     );
     // Extracting waveform separately if index is odd.
-    if (widget.index.isOdd) {
-      controller
-          .extractWaveformData(
-            path: widget.appDirectory.path,
-            noOfSamples:
-                playerWaveStyle.getSamplesForWidth(widget.width ?? 200),
-          )
-          .then((waveformData) => debugPrint(waveformData.toString()));
-    }
+
+    controller
+        .extractWaveformData(
+          path: widget.path!,
+          noOfSamples: playerWaveStyle.getSamplesForWidth(widget.width ?? 300),
+        )
+        .then((waveformData) => debugPrint(waveformData.toString()));
   }
 
   @override
@@ -167,9 +116,7 @@ class _WaveBubbleState extends State<WaveBubble> {
                   AudioFileWaveforms(
                     size: Size(MediaQuery.of(context).size.width / 2, 70),
                     playerController: controller,
-                    waveformType: widget.index?.isOdd ?? false
-                        ? WaveformType.fitWidth
-                        : WaveformType.long,
+                    waveformType: WaveformType.fitWidth,
                     playerWaveStyle: playerWaveStyle,
                   ),
                   if (widget.isSender) const SizedBox(width: 10),
