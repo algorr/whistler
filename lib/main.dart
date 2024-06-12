@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whistler/features/view/home/home_view.dart';
+import 'package:whistler/features/view/home/new_home_view.dart';
+import 'package:whistler/features/viewmodel/language/cubit/language_cubit.dart';
+import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 import 'package:whistler/products/init/app_init.dart';
 
@@ -18,6 +20,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => WhistlerCubit()..init()),
+        BlocProvider(create: (context) => RecordCubit()..init()),
+        BlocProvider(create: (context) => LanguageCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomeView(),
+        home: const NewHomeView(),
       ),
     );
   }

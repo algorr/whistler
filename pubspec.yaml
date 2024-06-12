@@ -66,6 +66,8 @@ dependencies:
   equatable: ^2.0.5
   uuid: ^4.4.0
   dartz: ^0.10.1
+  audioplayers: ^6.0.0
+  animated_toggle_switch: ^0.8.2
 
  
   
@@ -102,6 +104,8 @@ flutter:
   assets:
     - assets/env/
     - assets/lottie/
+    - assets/icons/
+    - assets/images/
 
   #   - images/a_dot_ham.jpeg
 
@@ -116,10 +120,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

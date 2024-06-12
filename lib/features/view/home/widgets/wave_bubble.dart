@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +10,12 @@ class WaveBubble extends StatefulWidget {
   final double? width;
 
   const WaveBubble({
-    Key? key,
+    super.key,
     this.width,
     required this.index,
     this.isSender = false,
     this.path,
-  }) : super(key: key);
+  });
 
   @override
   State<WaveBubble> createState() => _WaveBubbleState();
@@ -76,8 +75,9 @@ class _WaveBubbleState extends State<WaveBubble> {
   Widget build(BuildContext context) {
     return widget.path != null || file?.path != null
         ? Align(
-            alignment:
-                widget.isSender ? Alignment.centerRight : Alignment.centerLeft,
+            alignment: widget.index.isOdd
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.only(
                 bottom: 6,
@@ -116,7 +116,7 @@ class _WaveBubbleState extends State<WaveBubble> {
                   AudioFileWaveforms(
                     size: Size(MediaQuery.of(context).size.width / 2, 70),
                     playerController: controller,
-                    waveformType: WaveformType.fitWidth,
+                    waveformType: WaveformType.long,
                     playerWaveStyle: playerWaveStyle,
                   ),
                   if (widget.isSender) const SizedBox(width: 10),
@@ -127,3 +127,98 @@ class _WaveBubbleState extends State<WaveBubble> {
         : const SizedBox.shrink();
   }
 }
+
+/* class WaveBubble extends StatefulWidget {
+  final bool isSender;
+  final int index;
+  final String? path;
+  final double? width;
+
+  const WaveBubble({
+    super.key,
+    this.width,
+    required this.index,
+    this.isSender = false,
+    this.path,
+  });
+
+  @override
+  State<WaveBubble> createState() => _WaveBubbleState();
+}
+
+class _WaveBubbleState extends State<WaveBubble> {
+  File? file;
+
+  late PlayerController controller;
+  late StreamSubscription<PlayerState> playerStateSubscription;
+
+  final playerWaveStyle = const PlayerWaveStyle(
+    fixedWaveColor: Colors.white54,
+    liveWaveColor: Colors.white,
+    spacing: 6,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    controller = PlayerController();
+    _preparePlayer();
+    playerStateSubscription = controller.onPlayerStateChanged.listen((_) {
+      setState(() {});
+    });
+  }
+
+  void _preparePlayer() async {
+    // Opening file from assets folder
+
+    file = File(widget.path ?? '');
+    print('File in path : ${file?.path}');
+
+    /* controller
+        .extractWaveformData(
+          path: widget.path!,
+          noOfSamples: playerWaveStyle.getSamplesForWidth(widget.width ?? 300),
+        )
+        .then((waveformData) => debugPrint('waveform data : $waveformData')); */
+
+    // Prepare player with extracting waveform if index is even.
+    controller.preparePlayer(
+      path: widget.path ?? '',
+      shouldExtractWaveform: false,
+    );
+
+    print('Initalize da playerstate: ${controller.playerState}');
+    // Extracting waveform separately if index is odd.
+  }
+
+  @override
+  void dispose() {
+    playerStateSubscription.cancel();
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.path != null || file?.path != null
+        ? IconButton(
+            iconSize: 100,
+            onPressed: () async {
+              print('Basıldı');
+              controller.playerState.isPlaying
+                  ? await controller.pausePlayer()
+                  : await controller.startPlayer(
+                      finishMode: FinishMode.loop,
+                    );
+            },
+            icon: Icon(
+              controller.playerState.isPlaying ? Icons.stop : Icons.play_arrow,
+              size: 30,
+            ),
+            color: Colors.white,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          )
+        : const SizedBox.shrink();
+  }
+} */

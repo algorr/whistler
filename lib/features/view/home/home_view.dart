@@ -1,16 +1,16 @@
-import 'dart:io';
-
+/* import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:typewritertext/v3/typewriter.dart';
+import 'package:whistler/features/view/home/mixin/date_time_formatter_mixin.dart';
 import 'package:whistler/features/view/home/widgets/chat_bubles.dart';
-import 'package:whistler/features/view/home/widgets/wave_bubble.dart';
+import 'package:whistler/features/view/home/widgets/player_widget.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatelessWidget with DateTimeFormatterMixin {
   const HomeView({super.key});
 
   @override
@@ -21,13 +21,7 @@ class HomeView extends StatelessWidget {
         if (state is WhistlerInitial) {
           print('Home View de state: $state');
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title:
-                  const Text('Whistler', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.black,
-            ),
+            appBar: const AppBarWidget(),
             body: Container(
               decoration: const BoxDecoration(color: Colors.black),
               child: Center(
@@ -48,13 +42,7 @@ class HomeView extends StatelessWidget {
         } else if (state is WhistlerLoadedState) {
           print('Home View de state: $state');
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title:
-                  const Text('Whistler', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.black,
-            ),
+            appBar: const AppBarWidget(),
             floatingActionButton: InkWell(
               onTap: () {
                 context.read<WhistlerCubit>().startStopRecord();
@@ -113,20 +101,33 @@ class HomeView extends StatelessWidget {
                               style: const TextStyle(color: Colors.white),
                             ),
                           ); */
-                              Column(
-                            children: [
-                              WaveBubble(
+                              state.chatList != null
+                                  ? Column(
+                                      children: [
+                                        /*  WaveBubble(
                                   path: state.chatList?[index].audioFilePath ??
                                       '',
-                                  index: index),
-                              ChatBubblesWidget(
-                                text: state.chatList?[index].transcribedText ??
-                                    '',
-                                time: state.chatList?[index].time ?? '',
-                                //height: size.height * 0.05,
-                              ),
-                            ],
-                          );
+                                  index: index), */
+                                        AudioPlayerWidget(
+                                          audioPath: state.chatList?[index]
+                                                  .audioFilePath ??
+                                              '',
+                                          time:
+                                              state.chatList?[index].time ?? '',
+                                        ),
+                                        ChatBubblesWidget(
+                                          text: state.chatList?[index]
+                                                  .transcribedText ??
+                                              '',
+                                          time: formatDateTimeString(
+                                              state.chatList?[index].time ??
+                                                  ''),
+                                          index: index,
+                                          //height: size.height * 0.05,
+                                        ),
+                                      ],
+                                    )
+                                  : Container();
                         },
                       ),
                     ),
@@ -187,13 +188,7 @@ class HomeView extends StatelessWidget {
           print('Home View de state: $state');
 
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              title:
-                  const Text('Whistler', style: TextStyle(color: Colors.white)),
-              backgroundColor: Colors.black,
-            ),
+            appBar: const AppBarWidget(),
             floatingActionButton: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -279,3 +274,49 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+
+class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WhistlerCubit, WhistlerState>(
+      builder: (context, state) {
+        return AppBar(
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            context.read<WhistlerCubit>().isLanguageTurkish
+                ? 'English -> Turkish'
+                : 'Turkish -> English',
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.black,
+          actions: [
+            SizedBox(
+              height: 30,
+              width: 70,
+              child: AnimatedToggleSwitch.dual(
+                current: context.read<WhistlerCubit>().isLanguageTurkish,
+                first: false,
+                second: true,
+                iconBuilder: (value) => value == false
+                    ? Image.asset('assets/icons/ic_turkish.png')
+                    : Image.asset('assets/icons/ic_english.png'),
+                onTap: (value) {
+                  context.read<WhistlerCubit>().changeLanguage();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+ */

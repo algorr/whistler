@@ -1,170 +1,137 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:whistler/domain/service/cache/hive_cache_service.dart';
-import 'package:whistler/domain/service/record/record_service.dart';
+import 'package:whistler/products/cache/hive_cache_service.dart';
 import 'package:whistler/domain/service/whistler/speech_to_text_service.dart';
 import 'package:whistler/features/model/chat_model.dart';
 import 'package:whistler/features/model/response_model.dart';
 
 part 'whistler_state.dart';
 
+/// The `WhistlerCubit` class in Dart is responsible for handling speech recognition, language
+/// selection, caching chat data, and managing state changes in a Flutter application.
 class WhistlerCubit extends Cubit<WhistlerState> {
   WhistlerCubit()
       : super(WhistlerInitial(
           isRecording: false,
         ));
 
+  /// The line `final SpeechToTextService _speechToTextService = SpeechToTextService();` is creating an
+  /// instance of the `SpeechToTextService` class and assigning it to the private variable
+  /// `_speechToTextService`. This instance will be used to interact with the speech-to-text service for
+  /// handling speech recognition functionalities in the `WhistlerCubit` class.
   final SpeechToTextService _speechToTextService = SpeechToTextService();
+
+  /// The line `final HiveCacheService _hiveCacheService = HiveCacheService();` is creating an instance of
+  /// the `HiveCacheService` class and assigning it to the private variable `_hiveCacheService`. This
+  /// instance will be used to interact with the cache service for storing and retrieving chat data in the
+  /// `WhistlerCubit` class. The `HiveCacheService` likely provides functionality related to caching data
+  /// locally using Hive, a lightweight and fast key-value database.
   final HiveCacheService _hiveCacheService = HiveCacheService();
-  final RecordService _recordService = RecordService();
-
-  bool isRecording = false;
-  bool isRecordingCompleted = false;
-  bool isLoading = false;
-  final RecorderController recorderController = RecorderController();
-  String path = '';
-  final Directory appDirectory = Directory.current;
-
-  final ScrollController scrollController = ScrollController();
 
   ResponseModel? responseModel;
-  String? recognizedText = '';
-
-  int index = 0;
-
-  PlayerController playerController = PlayerController();
-  late StreamSubscription<PlayerState> playerStateSubscription;
-
   List<ChatModel>? storagedFiles = [];
+  String filePath = '';
+  bool isLanguageTurkish = false;
 
-  Future<ResponseModel?> getResponseOfEnglishSpeech() async {
-    emit(WhistlerLoadingState());
-    final filePath = await startStopRecord();
-    if (filePath != null) {
-      final response =
-          await _speechToTextService.getTextOfEnglishSpeech(filePath);
-
-      return response;
-    }
-    return null;
+  /// The `init` function in Dart initializes the cache service and retrieves all lists asynchronously.
+  Future<void> init() async {
+    await initCacheService();
+    await getAllList();
   }
 
-  Future<ResponseModel> getResponseOfTurkishSpeech(String filePath) async {
+  /// The function `decideLanguage` determines whether to use Turkish or English language and calls the
+  /// corresponding speech response function.
+  Future<void> decideLanguage() async {
+    if (isLanguageTurkish) {
+      getResponseOfTurkishSpeech();
+    } else {
+      getResponseOfEnglishSpeech();
+    }
+  }
+
+  /// The function `getResponseOfEnglishSpeech` processes English speech input, saves the transcribed
+  /// text and response to a local cache, retrieves all stored data, and emits a loaded state with the
+  /// chat list.
+  ///
+  /// Returns:
+  ///   The function `getResponseOfEnglishSpeech()` is returning a `Future` that resolves to a
+  /// `ResponseModel` object or `null`.
+  Future<ResponseModel?> getResponseOfEnglishSpeech() async {
     emit(WhistlerLoadingState());
     final response =
-        await _speechToTextService.getTextOfTurkishSpeech(filePath);
-    await _hiveCacheService.saveLocale(
-      audioFilePath: '',
+        await _speechToTextService.getTextOfEnglishSpeech(filePath);
+    /* await _hiveCacheService.saveLocale(
+      audioFilePath: filePath,
       transcribedText: response.text ?? '',
       time: DateTime.now().toString(),
-    );
+    ); */
+    await saveChatLocal(
+        audioFilePath: filePath,
+        transcribedText: response.text ?? '',
+        time: DateTime.now().toString(),
+        response: response);
+
     await getAllList();
-    emit(
-        WhistlerLoadedState(chatList: storagedFiles, isRecording: isRecording));
+    emit(WhistlerLoadedState(chatList: storagedFiles));
+    filePath = '';
     return response;
   }
 
-  Future<void> init() async {
-    await initCacheService();
-    await getDirectory();
-    await initControllers();
+  /// This Dart function retrieves the response of a Turkish speech, saves the transcribed text and
+  /// audio file path to local storage, and then emits a loaded state with the chat list.
+  ///
+  /// Returns:
+  ///   The function `getResponseOfTurkishSpeech()` is returning a `Future<ResponseModel>`.
+  Future<ResponseModel> getResponseOfTurkishSpeech() async {
+    emit(WhistlerLoadingState());
+    final response =
+        await _speechToTextService.getTextOfTurkishSpeech(filePath);
+    /*  await _hiveCacheService.saveLocale(
+      audioFilePath: '',
+      transcribedText: response.text ?? '',
+      time: DateTime.now().toString(),
+    ); */
+    await saveChatLocal(
+        audioFilePath: filePath,
+        transcribedText: response.text ?? '',
+        time: DateTime.now().toString(),
+        response: response);
+
     await getAllList();
+    emit(WhistlerLoadedState(chatList: storagedFiles));
+    filePath = '';
+    return response;
   }
 
+  /// The function `getAllList` fetches a list of `ChatModel` objects from a cache service and emits a
+  /// state with the fetched data.
+  ///
+  /// Returns:
+  ///   The `getAllList` function is returning a `Future` that resolves to a `List` of `ChatModel`
+  /// objects or `null`.
   Future<List<ChatModel>?> getAllList() async {
     storagedFiles = await _hiveCacheService.fetchItems();
-    emit(
-        WhistlerLoadedState(chatList: storagedFiles, isRecording: isRecording));
+    emit(WhistlerLoadedState(chatList: storagedFiles));
     return storagedFiles;
   }
 
+  /// The `initCacheService` function initializes the cache service by calling the `initLocalService`
+  /// method.
   Future<void> initCacheService() async {
     await _hiveCacheService.initLocalService();
   }
 
-  Future<void> addChatToLocal(
+  /// Allows save items to local storage as ChatModel objects.
+  Future<void> saveChatLocal(
       {required String audioFilePath,
       required String transcribedText,
-      required String time}) async {}
-
-  Future<void> initControllers() async {
-    try {
-      _recordService.initializeControllers(recorderController);
-    } catch (e) {
-      print('Controllerlar başlatılamadı : $e');
-    }
-  }
-
-  final playerWaveStyle = const PlayerWaveStyle(
-    fixedWaveColor: Colors.white54,
-    liveWaveColor: Colors.white,
-    spacing: 6,
-  );
-
-  void scrollToEnd() {
-    scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
+      required String time,
+      required ResponseModel response}) async {
+    await _hiveCacheService.saveLocale(
+      audioFilePath: filePath,
+      transcribedText: response.text ?? '',
+      time: time,
     );
-  }
-
-  Future<String?> startStopRecord() async {
-    if (await Permission.microphone.request().isGranted) {
-      isRecording = !isRecording;
-      print('isRecording : $isRecording');
-      if (isRecording) {
-        print('isRecordingCompleted : $isRecordingCompleted');
-        emit(WhistlerStartedRecordState(isRecording));
-        await _recordService.startRecord(recorderController, path, isRecording);
-      } else {
-        isRecordingCompleted = !isRecordingCompleted;
-        print(' hooopp   isRecordingCompleted : $isRecordingCompleted');
-
-        if (isRecordingCompleted) {
-          print(' Kayıt tamamlandı : $isRecording');
-          path = await _recordService.stopRecord(
-            recorderController,
-            path,
-            isRecording,
-          );
-          print('Kayıt sonrası path : $path');
-          isRecording = !isRecording;
-          emit(WhistlerWaitingForDataComesState());
-          print('Whistler path : $path');
-          final responseModel =
-              await _speechToTextService.getTextOfEnglishSpeech(path);
-
-          isLoading = !isLoading;
-          print('Gelen veri : ${responseModel.text}');
-          await _hiveCacheService.saveLocale(
-              audioFilePath: path,
-              transcribedText: responseModel.text ?? '',
-              time: DateTime.now().toString());
-          storagedFiles = await getAllList();
-
-          emit(
-            WhistlerLoadedState(
-                chatList: storagedFiles, isRecording: isRecording),
-          );
-        }
-      }
-    }
-    return null;
-  }
-
-  Future<String> getDirectory() async {
-    try {
-      path = await _recordService.getDirectory(appDirectory);
-      return path;
-    } catch (e) {
-      print('Path alınamadı : $e');
-    }
-    return '';
   }
 }

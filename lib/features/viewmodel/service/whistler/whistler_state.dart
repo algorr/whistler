@@ -29,6 +29,15 @@ final class WhistlerStartedRecordState extends WhistlerState {
   List<Object> get props => [isRecording];
 }
 
+final class LanguageChangedState extends WhistlerState {
+  final bool isLanguageTurkish;
+
+  const LanguageChangedState(this.isLanguageTurkish);
+
+  @override
+  List<Object> get props => [isLanguageTurkish];
+}
+
 final class WhistlerStopRecordState extends WhistlerState {
   final bool isRecording;
 
@@ -40,10 +49,11 @@ final class WhistlerStopRecordState extends WhistlerState {
 
 final class WhistlerLoadedState extends WhistlerState {
   final List<ChatModel>? chatList;
-  bool isRecording;
 
-  WhistlerLoadedState({required this.chatList, required this.isRecording});
+  const WhistlerLoadedState({
+    required this.chatList,
+  });
 
   @override
-  List<Object> get props => [chatList!, isRecording];
+  List<Object> get props => [chatList!];
 }

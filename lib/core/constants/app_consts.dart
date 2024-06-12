@@ -8,4 +8,8 @@ final class AppConsts {
   static const String languageTurkish = 'tr';
   static Map<String, String> header =
       ({'Authorization': 'Bearer ${AppEnvironment.apiKey}'});
+
+  /// UI consts
+  static const String appName = 'Whistler';
+  static const String fontFamily = 'Ubuntu';
 }

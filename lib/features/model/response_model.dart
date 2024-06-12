@@ -2,15 +2,15 @@
 class ResponseModel {
   ResponseModel({this.text});
 
-  /// text property
+  /// Transcribed Text from API
   String? text;
 
-  /// fromJson method
+  /// From Json method for Response Model
   ResponseModel.fromJson(Map<String, dynamic> json) {
     text = json['text'];
   }
 
-  /// toJson method
+  /// toJson method for Response Model
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['text'] = text;
