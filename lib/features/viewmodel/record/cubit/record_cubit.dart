@@ -3,7 +3,6 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:whistler/core/utils/mixins/connection/check_internet_connection_mixin.dart';
 import 'package:whistler/products/record/record_service.dart';
