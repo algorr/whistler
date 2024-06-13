@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whistler/features/view/home/new_home_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:whistler/core/resources/index.dart';
+import 'package:whistler/core/resources/route_manager.dart';
 import 'package:whistler/features/viewmodel/language/cubit/language_cubit.dart';
 import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
@@ -24,13 +26,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LanguageCubit()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        builder: FToastBuilder(),
+        title: AppStrings.appName,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const NewHomeView(),
+        onGenerateRoute: RouteManager.getRoute,
+        initialRoute: Routes.splashRoute,
+        theme: getAppTheme(),
       ),
     );
   }

@@ -1,6 +1,12 @@
+import 'package:flutter/material.dart';
+
 class AssetsManager {
   static String logoUrl = 'assets/images/logo.png';
-  static const String pickImageBlankIcon = 'assets/images/icon_add_image.png';
-  static const String pickYourName = 'assets/videos/add1.gif';
-  static const String scoreBoard = 'assets/images/ic_scoreboard.png';
+
+  //? Home View
+  static const String englishFlagButton = 'assets/icons/ic_english.png';
+  static const String turkishFlagButton = 'assets/icons/ic_turkish.png';
+  static const String loadingLottie = 'assets/lottie/loading.json';
+  static const IconData startRecordButtonIcon = Icons.mic;
+  static const IconData stopRecordButtonIcon = Icons.stop;
 }

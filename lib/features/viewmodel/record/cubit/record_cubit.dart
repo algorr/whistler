@@ -2,14 +2,18 @@ import 'dart:io';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whistler/core/utils/mixins/connection/check_internet_connection_mixin.dart';
 import 'package:whistler/products/record/record_service.dart';
 
 part 'record_state.dart';
 
 /// The `RecordCubit` class manages recording functionality, including initializing controllers, getting
 /// directories, and starting/stopping recording.
-final class RecordCubit extends Cubit<RecordState> {
+final class RecordCubit extends Cubit<RecordState>
+    with CheckInternetConnectionMixin {
   RecordCubit() : super(RecordInitial(isRecording: false));
 
   /// Record Service Instance
@@ -56,9 +60,8 @@ final class RecordCubit extends Cubit<RecordState> {
     return '';
   }
 
-//b0f6f1e9b012.m4a
   /// Start/Stop Recording Function includes permission check and recording state change
-  Future<String?> startStopRecord() async {
+  Future<String?> startStopRecord(BuildContext context, Size size) async {
     if (await Permission.microphone.request().isGranted) {
       toggleIsRecording();
       emit(StartedRecordState(isRecording: isRecording));

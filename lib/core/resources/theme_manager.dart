@@ -13,17 +13,17 @@ ThemeData getAppTheme() {
     primaryColor: ColorManager.primary,
     primaryColorLight: ColorManager.primaryWith70Opacity,
     primaryColorDark: ColorManager.darkPrimary,
-    disabledColor: ColorManager.grey1,
+    disabledColor: ColorManager.grey,
     splashColor: ColorManager.primaryWith70Opacity,
     brightness: Brightness.dark,
-
+    scaffoldBackgroundColor: ColorManager.primary,
     // Progress Indicator
     progressIndicatorTheme:
-        ProgressIndicatorThemeData(color: ColorManager.black),
+        ProgressIndicatorThemeData(color: ColorManager.white),
 
     // CardView Theme
     cardTheme: CardTheme(
-      color: ColorManager.white,
+      color: ColorManager.darkGrey,
       shadowColor: ColorManager.grey,
       elevation: AppSize.s4,
     ),
@@ -31,28 +31,29 @@ ThemeData getAppTheme() {
     iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(iconColor: MaterialStateProperty.all(Colors.white))),
 
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: ColorManager.scaffoldColor, elevation: AppSize.s10),
+    /* floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManager.scaffoldColor, elevation: AppSize.s10), */
 
     // AppBar Theme
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: ColorManager.newWhite,
+      color: ColorManager.primary,
       elevation: AppSize.s0,
       shadowColor: ColorManager.primaryWith70Opacity,
       actionsIconTheme: IconThemeData(color: ColorManager.blue),
       iconTheme: IconThemeData(color: ColorManager.blue),
       titleTextStyle: getRegularTextStyle(
-        color: ColorManager.black,
+        color: ColorManager.white,
         fontSize: FontSize.s18,
       ),
     ),
 
     dialogTheme: DialogTheme(
-      backgroundColor: ColorManager.scaffoldColor,
-      titleTextStyle: TextStyle(color: ColorManager.black, fontFamily: 'Bruno'),
+      backgroundColor: ColorManager.grey,
+      titleTextStyle:
+          TextStyle(color: ColorManager.primary, fontFamily: 'Bruno'),
       contentTextStyle: TextStyle(
-          color: ColorManager.black,
+          color: ColorManager.primary,
           fontFamily: AppConsts.fontFamily,
           fontSize: FontSize.s18),
       elevation: AppSize.s10,
@@ -64,7 +65,7 @@ ThemeData getAppTheme() {
     // Button Theme
     buttonTheme: ButtonThemeData(
       shape: const StadiumBorder(),
-      disabledColor: ColorManager.grey1,
+      disabledColor: ColorManager.grey,
       buttonColor: ColorManager.primary,
       splashColor: ColorManager.primaryWith70Opacity,
     ),
@@ -95,20 +96,20 @@ ThemeData getAppTheme() {
         fontSize: FontSize.s14,
       ),
       bodySmall: getRegularTextStyle(
-        color: ColorManager.grey1,
+        color: ColorManager.grey,
         fontSize: FontSize.s12,
       ),
       bodyLarge: getLargeTextStyle(
-        color: ColorManager.black,
+        color: ColorManager.white,
       ),
       labelLarge:
-          getLargeTextStyle(color: ColorManager.black, fontSize: FontSize.s40),
+          getLargeTextStyle(color: ColorManager.white, fontSize: FontSize.s40),
       labelMedium: getLargeTextStyle(
           color: ColorManager.fortuneWheelItemColor, fontSize: FontSize.s22),
       titleLarge:
           getLargeTextStyle(color: ColorManager.white, fontSize: FontSize.s16),
-      headlineMedium: getLargeTextStyle(
-          color: ColorManager.scaffoldColor, fontSize: FontSize.s18),
+      headlineMedium:
+          getLargeTextStyle(color: ColorManager.white, fontSize: FontSize.s18),
     ),
 
     //Input Decoration Theme
@@ -117,35 +118,30 @@ ThemeData getAppTheme() {
         AppPadding.p8,
       ),
       hintStyle: getRegularTextStyle(
-        color: ColorManager.grey1,
+        color: ColorManager.grey,
       ),
       labelStyle: getMediumTextStyle(color: ColorManager.darkGrey),
       errorStyle: getRegularTextStyle(color: ColorManager.error),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ColorManager.grey, width: AppSize.s1_5),
-        borderRadius: const BorderRadius.all(
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
           Radius.circular(AppSize.s8),
         ),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
-        borderRadius: const BorderRadius.all(
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
           Radius.circular(AppSize.s8),
         ),
       ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ColorManager.error, width: AppSize.s1_5),
-        borderRadius: const BorderRadius.all(
+      errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
           Radius.circular(AppSize.s8),
         ),
       ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppSize.s8),
-        ),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderSide: BorderSide.none,
       ),
     ),
   );

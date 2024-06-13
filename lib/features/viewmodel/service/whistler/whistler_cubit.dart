@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:whistler/products/cache/hive_cache_service.dart';
 import 'package:whistler/domain/service/whistler/speech_to_text_service.dart';
 import 'package:whistler/features/model/chat_model.dart';
@@ -33,6 +34,7 @@ class WhistlerCubit extends Cubit<WhistlerState> {
   List<ChatModel>? storagedFiles = [];
   String filePath = '';
   bool isLanguageTurkish = false;
+  ScrollController scrollController = ScrollController();
 
   /// The `init` function in Dart initializes the cache service and retrieves all lists asynchronously.
   Future<void> init() async {
@@ -73,7 +75,9 @@ class WhistlerCubit extends Cubit<WhistlerState> {
         response: response);
 
     await getAllList();
+
     emit(WhistlerLoadedState(chatList: storagedFiles));
+    _scrollToBottom();
     filePath = '';
     return response;
   }
@@ -99,7 +103,9 @@ class WhistlerCubit extends Cubit<WhistlerState> {
         response: response);
 
     await getAllList();
+
     emit(WhistlerLoadedState(chatList: storagedFiles));
+    _scrollToBottom();
     filePath = '';
     return response;
   }
@@ -113,6 +119,7 @@ class WhistlerCubit extends Cubit<WhistlerState> {
   Future<List<ChatModel>?> getAllList() async {
     storagedFiles = await _hiveCacheService.fetchItems();
     emit(WhistlerLoadedState(chatList: storagedFiles));
+    _scrollToBottom();
     return storagedFiles;
   }
 
@@ -133,5 +140,13 @@ class WhistlerCubit extends Cubit<WhistlerState> {
       transcribedText: response.text ?? '',
       time: time,
     );
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.jumpTo(
+        scrollController.position.maxScrollExtent,
+      );
+    });
   }
 }

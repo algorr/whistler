@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FontConsts {
-  static const String fontFamily = 'Bruno';
+  static const String fontFamily = 'Ubuntu';
 }
 
 class FontWeightManager {
