@@ -2,27 +2,27 @@
 
 A test case for InsursightAI company.
 
-## Whistler Voice Transcription Flutter Mobile App
+# Whistler Voice Transcription Flutter Mobile App
 
-# Api
+## Api
 Whisper AI
 
-# Design Pattern
+## Design Pattern
 MVVM
 
-# State Management and Software Architecture
+## State Management and Software Architecture
 BLOC
 
-# Local Storage
+## Local Storage
 HİVE 
 
-# Record and Play Audio
+## Record and Play Audio
 audio_waveforms
 
-# Environment Variables
+## Environment Variables
 envied
 
-# Api Calls
+## Api Calls
 http
 
 
