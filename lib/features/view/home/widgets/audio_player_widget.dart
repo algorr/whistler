@@ -10,11 +10,13 @@ final class AudioPlayerWidget extends StatefulWidget {
       {super.key,
       required this.audioPath,
       required this.time,
-      required this.index});
+      required this.index,
+      required this.size});
 
   final String audioPath;
   final String time;
   final int index;
+  final Size size;
 
   @override
   _AudioPlayerWidgetState createState() => _AudioPlayerWidgetState();
@@ -85,8 +87,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget>
               onPressed: _stopAudio,
             ),
             IconButton(
-                onPressed: () =>
-                    context.read<WhistlerCubit>().deleteItem(widget.index),
+                onPressed: () => context
+                    .read<WhistlerCubit>()
+                    .deleteItem(widget.index, widget.size),
                 icon: const Icon(Icons.delete_forever_outlined))
           ],
         ),

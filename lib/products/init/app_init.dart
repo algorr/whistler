@@ -13,6 +13,8 @@ final class AppInit {
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
+        overlays: [SystemUiOverlay.top]);
 
     /// Allows the hiveflutter package to initialize.
     await Hive.initFlutter();

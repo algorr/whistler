@@ -7,6 +7,7 @@ class AssetsManager {
   static const String englishFlagButton = 'assets/icons/ic_english.png';
   static const String turkishFlagButton = 'assets/icons/ic_turkish.png';
   static const String loadingLottie = 'assets/lottie/loading.json';
+  static const String emptyListLottie = 'assets/lottie/empty_list.json';
   static const IconData startRecordButtonIcon = Icons.mic;
   static const IconData stopRecordButtonIcon = Icons.stop;
 }

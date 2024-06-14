@@ -29,7 +29,10 @@ ThemeData getAppTheme() {
     ),
 
     iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(iconColor: MaterialStateProperty.all(Colors.white))),
+      style: ButtonStyle(
+        iconColor: MaterialStateProperty.all(ColorManager.white),
+      ),
+    ),
 
     /* floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: ColorManager.scaffoldColor, elevation: AppSize.s10), */
@@ -42,9 +45,9 @@ ThemeData getAppTheme() {
       shadowColor: ColorManager.primaryWith70Opacity,
       actionsIconTheme: IconThemeData(color: ColorManager.blue),
       iconTheme: IconThemeData(color: ColorManager.blue),
-      titleTextStyle: getRegularTextStyle(
+      titleTextStyle: getBoldTextStyle(
         color: ColorManager.white,
-        fontSize: FontSize.s18,
+        fontSize: FontSize.s22,
       ),
     ),
 

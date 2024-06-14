@@ -33,7 +33,7 @@ class RouteManager {
           title: const Text(AppStrings.noRouteFound),
         ),
         body: const Center(
-          child: Text(AppStrings.oppsss),
+          child: Text(AppStrings.wrongWay),
         ),
       ),
     );

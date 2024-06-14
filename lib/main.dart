@@ -19,20 +19,28 @@ final class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _multiBlocProvider();
+  }
+
+  MultiBlocProvider _multiBlocProvider() {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => WhistlerCubit()..init()),
         BlocProvider(create: (context) => RecordCubit()..init()),
         BlocProvider(create: (context) => LanguageCubit()),
       ],
-      child: MaterialApp(
-        builder: FToastBuilder(),
-        title: AppStrings.appName,
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: RouteManager.getRoute,
-        initialRoute: Routes.splashRoute,
-        theme: getAppTheme(),
-      ),
+      child: _materialApp(),
+    );
+  }
+
+  MaterialApp _materialApp() {
+    return MaterialApp(
+      builder: FToastBuilder(),
+      title: AppStrings.appName,
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: RouteManager.getRoute,
+      initialRoute: Routes.splashRoute,
+      theme: getAppTheme(),
     );
   }
 }

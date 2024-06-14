@@ -17,7 +17,6 @@ final class HiveCacheService extends CacheManager {
     Hive.registerAdapter(ChatModelAdapter());
     _box = await Hive.openBox<ChatModel>('chatBox');
     //deleteItem();
-    print('Box : ${_box.isOpen}');
   }
 
   /// The `saveLocale` function saves chat data to a local storage in Dart.

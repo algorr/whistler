@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:whistler/core/utils/mixins/cache/deleted_item_mixin.dart';
 import 'package:whistler/products/cache/hive_cache_service.dart';
 import 'package:whistler/domain/service/whistler/speech_to_text_service.dart';
 import 'package:whistler/features/model/chat_model.dart';
@@ -11,7 +12,7 @@ part 'whistler_state.dart';
 
 /// The `WhistlerCubit` class in Dart is responsible for handling speech recognition, language
 /// selection, caching chat data, and managing state changes in a Flutter application.
-final class WhistlerCubit extends Cubit<WhistlerState> {
+final class WhistlerCubit extends Cubit<WhistlerState> with DeletedItemMixin {
   WhistlerCubit()
       : super(WhistlerInitial(
           isRecording: false,
@@ -152,8 +153,9 @@ final class WhistlerCubit extends Cubit<WhistlerState> {
   }
 
   /// Delete specific chat from local storage and refresh the chat list.
-  Future<void> deleteItem(int index) async {
+  Future<void> deleteItem(int index, size) async {
     await _hiveCacheService.deleteItem(index);
+    await showDeletedItemToast(size);
     await getAllList();
     emit(WhistlerLoadedState(chatList: storagedFiles));
   }
