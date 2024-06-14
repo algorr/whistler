@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:whistler/core/resources/index.dart';
 
-class LoadingContainerWidget extends StatelessWidget {
+final class LoadingContainerWidget extends StatelessWidget {
   const LoadingContainerWidget({
     super.key,
     required this.size,

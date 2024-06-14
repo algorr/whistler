@@ -17,5 +17,8 @@ abstract class CacheManager {
   Future<List<ChatModel>> fetchItems();
 
   /// Delete all items from the local storage.
-  Future<void> deleteItem();
+  Future<void> deleteAll();
+
+  /// Delete specific item from the local storage.
+  Future<void> deleteItem(int index);
 }

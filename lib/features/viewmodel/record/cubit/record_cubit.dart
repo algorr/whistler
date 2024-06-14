@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whistler/core/errors/record_failure.dart';
 import 'package:whistler/core/utils/mixins/connection/check_internet_connection_mixin.dart';
 import 'package:whistler/products/record/record_service.dart';
 
@@ -43,8 +44,8 @@ final class RecordCubit extends Cubit<RecordState>
   Future<void> initControllers() async {
     try {
       _recordService.initializeControllers(recorderController);
-    } catch (e) {
-      print('Controller baslatilamadi : $e');
+    } on RecordFailure catch (e) {
+      throw e.message;
     }
   }
 
@@ -53,10 +54,9 @@ final class RecordCubit extends Cubit<RecordState>
     try {
       path = await _recordService.getDirectory(appDirectory);
       return path;
-    } catch (e) {
-      print('Path alınamadı : $e');
+    } on RecordFailure catch (e) {
+      throw e.message;
     }
-    return '';
   }
 
   /// Start/Stop Recording Function includes permission check and recording state change

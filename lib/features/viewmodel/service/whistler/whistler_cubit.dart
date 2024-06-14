@@ -11,7 +11,7 @@ part 'whistler_state.dart';
 
 /// The `WhistlerCubit` class in Dart is responsible for handling speech recognition, language
 /// selection, caching chat data, and managing state changes in a Flutter application.
-class WhistlerCubit extends Cubit<WhistlerState> {
+final class WhistlerCubit extends Cubit<WhistlerState> {
   WhistlerCubit()
       : super(WhistlerInitial(
           isRecording: false,
@@ -142,11 +142,19 @@ class WhistlerCubit extends Cubit<WhistlerState> {
     );
   }
 
+  /// Scroll to the bottom of the chat list.
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.jumpTo(
         scrollController.position.maxScrollExtent,
       );
     });
+  }
+
+  /// Delete specific chat from local storage and refresh the chat list.
+  Future<void> deleteItem(int index) async {
+    await _hiveCacheService.deleteItem(index);
+    await getAllList();
+    emit(WhistlerLoadedState(chatList: storagedFiles));
   }
 }

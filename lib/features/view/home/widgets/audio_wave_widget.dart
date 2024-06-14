@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whistler/core/resources/index.dart';
 import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 
-class AudioWaveWidget extends StatelessWidget {
+final class AudioWaveWidget extends StatelessWidget {
   const AudioWaveWidget({
     super.key,
     required this.size,

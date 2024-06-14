@@ -48,7 +48,7 @@ final class RecordService extends RecordManager {
   @override
   void initializeControllers(RecorderController recorderController) {
     recorderController = RecorderController()
-      ..androidEncoder = AndroidEncoder.vorbis
+      ..androidEncoder = AndroidEncoder.amr_wb
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC
       ..sampleRate = 44100
@@ -67,11 +67,9 @@ final class RecordService extends RecordManager {
       shouldExtractWaveform: index.isEven,
     );
 
-    controller
-        .extractWaveformData(
-          path: appDirectory.path,
-          noOfSamples: playerWaveStyle.getSamplesForWidth(200),
-        )
-        .then((waveformData) => print(waveformData.toString()));
+    controller.extractWaveformData(
+      path: appDirectory.path,
+      noOfSamples: playerWaveStyle.getSamplesForWidth(200),
+    );
   }
 }

@@ -1,5 +1,5 @@
 /// ResponseModel class
-class ResponseModel {
+final class ResponseModel {
   ResponseModel({this.text});
 
   /// Transcribed Text from API

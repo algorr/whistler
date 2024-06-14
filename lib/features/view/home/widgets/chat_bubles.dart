@@ -2,7 +2,7 @@ import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:flutter/material.dart';
 import 'package:whistler/core/resources/index.dart';
 
-class ChatBubblesWidget extends StatelessWidget {
+final class ChatBubblesWidget extends StatelessWidget {
   const ChatBubblesWidget(
       {super.key, required this.text, required this.time, required this.index});
 

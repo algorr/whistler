@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:whistler/core/resources/index.dart';
 import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 
-class RecordButtonDesignContainer extends StatelessWidget {
+final class RecordButtonDesignContainer extends StatelessWidget {
   const RecordButtonDesignContainer({
     super.key,
     required this.size,

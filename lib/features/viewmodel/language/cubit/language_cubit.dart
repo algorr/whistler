@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 /// Change Language State with Cubit
-class LanguageCubit extends Cubit<bool> {
+final class LanguageCubit extends Cubit<bool> {
   LanguageCubit() : super(false);
 
   /// The line `bool isLanguageTurkish = false;` is declaring a boolean variable named

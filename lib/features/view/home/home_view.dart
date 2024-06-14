@@ -4,18 +4,16 @@ import 'package:whistler/core/resources/index.dart';
 import 'package:whistler/features/view/home/mixin/date_time_formatter_mixin.dart';
 import 'package:whistler/features/view/home/mixin/date_time_picker_mixin.dart';
 import 'package:whistler/features/view/home/widgets/index.dart';
-import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 
-class HomeView extends StatelessWidget
+final class HomeView extends StatelessWidget
     with DateTimeFormatterMixin, DateTimePickerMixin {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(
-        'Build anında isRecording : ,${context.read<RecordCubit>().isRecording}');
+
     return Scaffold(
       appBar: AppBarWidget(
         size: size,
@@ -25,7 +23,6 @@ class HomeView extends StatelessWidget
         builder: (context, state) {
           if (state is WhistlerLoadingState ||
               state is WhistlerWaitingForDataComesState) {
-            print('Burası çalıştı  : $state');
             return LoadingContainerWidget(size: size);
           } else if (state is WhistlerLoadedState) {
             return Container(
@@ -62,7 +59,8 @@ class HomeView extends StatelessWidget
           children: [
             AudioPlayerWidget(
               audioPath: state.chatList?[index].audioFilePath ?? '',
-              time: state.chatList?[index].time ?? '',
+              time: state.chatList?[index].time ?? '', index: index,
+              //height: size.height * 0.05,
             ),
             ChatBubblesWidget(
               text: state.chatList?[index].transcribedText ?? '',

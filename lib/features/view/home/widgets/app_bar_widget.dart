@@ -5,7 +5,8 @@ import 'package:whistler/core/resources/index.dart';
 import 'package:whistler/features/viewmodel/language/cubit/language_cubit.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 
-class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+final class AppBarWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   const AppBarWidget({
     super.key,
     required this.size,

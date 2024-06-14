@@ -1,14 +1,20 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whistler/core/resources/index.dart';
 import 'package:whistler/features/view/home/mixin/date_time_formatter_mixin.dart';
+import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 
-class AudioPlayerWidget extends StatefulWidget {
+final class AudioPlayerWidget extends StatefulWidget {
+  const AudioPlayerWidget(
+      {super.key,
+      required this.audioPath,
+      required this.time,
+      required this.index});
+
   final String audioPath;
   final String time;
-
-  const AudioPlayerWidget(
-      {super.key, required this.audioPath, required this.time});
+  final int index;
 
   @override
   _AudioPlayerWidgetState createState() => _AudioPlayerWidgetState();
@@ -78,6 +84,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget>
               icon: const Icon(Icons.stop),
               onPressed: _stopAudio,
             ),
+            IconButton(
+                onPressed: () =>
+                    context.read<WhistlerCubit>().deleteItem(widget.index),
+                icon: const Icon(Icons.delete_forever_outlined))
           ],
         ),
       ),

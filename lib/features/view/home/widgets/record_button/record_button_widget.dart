@@ -7,7 +7,7 @@ import 'package:whistler/features/viewmodel/record/cubit/record_cubit.dart';
 import 'package:whistler/features/viewmodel/service/whistler/whistler_cubit.dart';
 import 'record_button_design_container.dart';
 
-class RecordButtonWidget extends StatelessWidget
+final class RecordButtonWidget extends StatelessWidget
     with CheckInternetConnectionMixin {
   const RecordButtonWidget({
     super.key,

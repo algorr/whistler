@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:whistler/core/constants/app_consts.dart';
+import 'package:whistler/core/errors/whisper_api_failure.dart';
 import 'package:whistler/domain/service/whistler/whisper_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:whistler/features/model/response_model.dart';
@@ -22,8 +23,8 @@ final class SpeechToTextService extends WhisperManager {
       final responseModel = ResponseModel.fromJson(jsonResponse);
 
       return responseModel;
-    } on Exception catch (e) {
-      throw Exception(e);
+    } on WhisperApiFailure catch (e) {
+      throw e.message;
     }
   }
 
@@ -42,8 +43,8 @@ final class SpeechToTextService extends WhisperManager {
       final Map<String, dynamic> jsonResponse = jsonDecode(responseString);
       final responseModel = ResponseModel.fromJson(jsonResponse);
       return responseModel;
-    } on Exception catch (e) {
-      throw Exception(e);
+    } on WhisperApiFailure catch (e) {
+      throw e.message;
     }
   }
 }

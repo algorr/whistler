@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:whistler/core/errors/cache_failure.dart';
 import 'package:whistler/products/cache/cache_manager.dart';
 import 'package:whistler/features/model/chat_model.dart';
 
@@ -43,10 +44,8 @@ final class HiveCacheService extends CacheManager {
           audioFilePath: audioFilePath,
           transcribedText: transcribedText,
           time: time));
-      print('added to local successfully $audioFilePath');
-      print('added to local successfully $transcribedText');
-    } catch (e) {
-      throw Exception(e);
+    } on CacheFailure catch (e) {
+      throw e.message;
     }
   }
 
@@ -59,15 +58,27 @@ final class HiveCacheService extends CacheManager {
     try {
       final chatList = _box.values.toList();
       return chatList;
-    } catch (e) {
-      throw Exception(e);
+    } on CacheFailure catch (e) {
+      throw e.message;
     }
   }
 
   /// The `deleteItem` function deletes an item from disk and prints a success message.
   @override
-  Future<void> deleteItem() async {
-    await _box.deleteFromDisk();
-    print('deleted successfully');
+  Future<void> deleteAll() async {
+    try {
+      await _box.deleteFromDisk();
+    } on CacheFailure catch (e) {
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<void> deleteItem(int index) async {
+    try {
+      await _box.deleteAt(index);
+    } on CacheFailure catch (e) {
+      throw e.message;
+    }
   }
 }
