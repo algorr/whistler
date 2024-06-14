@@ -1,16 +1,31 @@
 # whistler
 
-A new Flutter project.
+A test case for InsursightAI company.
 
-## Getting Started
+## Whistler Voice Transcription Flutter Mobile App
 
-This project is a starting point for a Flutter application.
+# Design Pattern
+MVVM
 
-A few resources to get you started if this is your first Flutter project:
+# State Management and Software Architecture
+BLOC
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Local Storage
+HİVE 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Record and Play Audio
+audio_waveforms
+
+# Environment Variables
+envied
+
+# Api Calls
+http
+
+
+
+# Demo Video
+
+https://github.com/algorr/whistler/assets/23214705/a6be2b38-955f-45da-aed3-274817cc250b
+
+
